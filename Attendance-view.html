@@ -1,0 +1,230 @@
+<div id="attendance-app">
+  <style>
+    #attendance-app {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      box-shadow: none;
+      font-family: Arial, sans-serif;
+    }
+
+    #attendance-app h2 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      width: 100%;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    select,
+    input[type="date"],
+    button {
+      width: 100%;
+      font-size: 14px;
+      padding: 0.6rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+      color: #333;
+      box-sizing: border-box;
+    }
+
+    select option {
+      background: #fff;
+      color: #333;
+    }
+
+    button {
+      font-weight: 600;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+      transform: translateY(-1px);
+    }
+
+    #spinner-container {
+      display: none;
+      justify-content: center;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .spinner {
+      width: 25px;
+      height: 25px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #007bff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .data-card {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 1rem;
+      width: 100%;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed #ccc;
+      font-size: 14px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .value {
+      color: #333;
+    }
+
+    .error,
+    .info {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-weight: 600;
+      text-align: center;
+      width: 100%;
+    }
+
+    .error {
+      background: #dc3545;
+      color: #fff;
+    }
+
+    .info {
+      background: #ffc107;
+      color: #000;
+    }
+  </style>
+
+
+
+  <div class="form-row">
+    <select id="classSelect">
+      <option value="">Select Class</option>
+      <option value="Kindergarten">Kindergarten</option>
+      <option value="Nursery(A)">Nursery(A)</option>
+      <option value="Nursery(B)">Nursery(B)</option>
+      <option value="Nursery(C)">Nursery(C)</option>
+      <option value="KG(A)">KG(A)</option>
+      <option value="KG(B)">KG(B)</option>
+      <option value="KG(C)">KG(C)</option>
+      <option value="CLASS(1A)">CLASS(1A)</option>
+      <option value="CLASS(1B)">CLASS(1B)</option>
+      <option value="CLASS(1C)">CLASS(1C)</option>
+      <option value="CLASS(2A)">CLASS(2A)</option>
+      <option value="CLASS(2B)">CLASS(2B)</option>
+      <option value="CLASS(2C)">CLASS(2C)</option>
+      <option value="CLASS(3A)">CLASS(3A)</option>
+      <option value="CLASS(3B)">CLASS(3B)</option>
+      <option value="CLASS(3C)">CLASS(3C)</option>
+      <option value="CLASS(4A)">CLASS(4A)</option>
+      <option value="CLASS(4B)">CLASS(4B)</option>
+      <option value="CLASS(4C)">CLASS(4C)</option>
+      <option value="CLASS(5A)">CLASS(5A)</option>
+      <option value="CLASS(5B)">CLASS(5B)</option>
+      <option value="CLASS(5C)">CLASS(5C)</option>
+      <option value="CLASS(6A)">CLASS(6A)</option>
+      <option value="CLASS(6B)">CLASS(6B)</option>
+      <option value="CLASS(6C)">CLASS(6C)</option>
+      <option value="CLASS(7A)">CLASS(7A)</option>
+      <option value="CLASS(7B)">CLASS(7B)</option>
+      <option value="CLASS(7C)">CLASS(7C)</option>
+      <option value="CLASS(8A)">CLASS(8A)</option>
+      <option value="CLASS(8B)">CLASS(8B)</option>
+      <option value="CLASS(8C)">CLASS(8C)</option>
+      <option value="CLASS(9A)">CLASS(9A)</option>
+      <option value="CLASS(9B)">CLASS(9B)</option>
+      <option value="CLASS(9C)">CLASS(9C)</option>
+      <option value="CLASS(10A)">CLASS(10A)</option>
+      <option value="CLASS(10B)">CLASS(10B)</option>
+      <option value="CLASS(10C)">CLASS(10C)</option>
+      <option value="CLASS(11A)">CLASS(11A)</option>
+      <option value="CLASS(11B)">CLASS(11B)</option>
+      <option value="CLASS(11C)">CLASS(11C)</option>
+      <option value="CLASS(12A)">CLASS(12A)</option>
+      <option value="CLASS(12B)">CLASS(12B)</option>
+      <option value="CLASS(12C)">CLASS(12C)</option>
+    </select>
+
+    <input type="date" id="dateInput" />
+    <button onclick="fetchAttendance()">Fetch</button>
+  </div>
+
+  <div id="spinner-container"><div class="spinner"></div></div>
+  <div id="result"></div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxWvCsQBbTN4X8x3dRKzdyONKF6FUKpTRLJ4FC2XbX8oKtXcs7L2dks_rm__ICCocCq/exec";
+
+    async function fetchAttendance() {
+      const className = document.querySelector("#classSelect").value;
+      const date = document.querySelector("#dateInput").value;
+      const spinner = document.querySelector("#spinner-container");
+      const resultBox = document.querySelector("#result");
+      resultBox.innerHTML = "";
+
+      if (!className || !date) {
+        resultBox.innerHTML = `<div class="error">⚠️ Please select both class and date.</div>`;
+        return;
+      }
+
+      spinner.style.display = "flex";
+
+      try {
+        const response = await fetch(`${API_URL}?class=${encodeURIComponent(className)}&date=${encodeURIComponent(date)}`);
+        const text = await response.text();
+        const data = JSON.parse(text);
+        spinner.style.display = "none";
+
+        if (data.status === "success") {
+          const entries = Object.entries(data.data)
+            .map(([key, value]) => `
+              <div class="data-row">
+                <div class="label">${key}</div>
+                <div class="value">${value}</div>
+              </div>`)
+            .join("");
+          resultBox.innerHTML = `<div class="data-card">${entries}</div>`;
+        } else {
+          resultBox.innerHTML = `<div class="info">⚠️ ${data.message}</div>`;
+        }
+      } catch (error) {
+        spinner.style.display = "none";
+        resultBox.innerHTML = `<div class="error">❌ Error fetching attendance. Check console log.</div>`;
+        console.error("Fetch Error:", error);
+      }
+    }
+  </script>
+</div>
