@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notice-board</title>
+</head>
+<body>
+<div class="notification-widget" id="notificationBox">  
+  <div class="notification-loading-spinner">
+    <div class="notification-spinner"></div>
+    <span>Loading notifications...</span>
+  </div>
+</div>
+
+<style>
+  .notification-widget {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-height: 140px;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .notification-widget * {
+    box-sizing: border-box;
+  }
+
+  .notification-widget::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.4), transparent);
+  }
+
+  .notification-header {
+    padding: 20px 24px 16px;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(14, 165, 233, 0.08)) !important;
+    border-bottom: 1px solid #f3f4f6;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
+
+  .notification-title-main {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827 !important;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.2;
+  }
+
+  .notification-count-badge {
+    background: linear-gradient(135deg, #ec4899, #0ea5e9) !important;
+    color: white !important;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .notification-container-scroll {
+    max-height: 480px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+  .notification-container-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .notification-container-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .notification-container-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db !important;
+    border-radius: 3px;
+  }
+
+  .notification-container-scroll::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af !important;
+  }
+
+  .notification-item {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f3f4f6;
+    animation: notificationSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    background: #ffffff !important;
+  }
+
+  .notification-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(135deg, #ec4899, #0ea5e9);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .notification-item:hover {
+    background: rgba(236, 72, 153, 0.05) !important;
+    transform: translateX(4px);
+  }
+
+  .notification-item:hover::before {
+    opacity: 1;
+  }
+
+  .notification-item:last-child {
+    border-bottom: none;
+  }
+
+  @keyframes notificationSlideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .notification-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    gap: 12px;
+  }
+
+  .notification-item-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827 !important;
+    line-height: 1.4;
+    flex: 1;
+    margin: 0;
+  }
+
+  .notification-item-icon {
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #ec4899, #0ea5e9);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+
+  .notification-item-message {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #4b5563 !important;
+    margin: 0 0 10px 0;
+  }
+
+  .notification-item-date {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .notification-loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .notification-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(236, 72, 153, 0.1);
+    border-top: 3px solid #ec4899;
+    border-radius: 50%;
+    animation: notificationSpin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    margin-bottom: 16px;
+  }
+
+  .notification-loading-spinner span {
+    color: #6b7280 !important;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  @keyframes notificationSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .notification-error-message,
+  .notification-empty-state {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .notification-empty-state {
+    color: #6b7280 !important;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.06), rgba(14, 165, 233, 0.06)) !important;
+  }
+
+  .notification-error-message {
+    color: #dc2626 !important;
+    background: rgba(220, 38, 38, 0.05) !important;
+  }
+
+  .notification-pulse {
+    animation: notificationPulse 2s infinite;
+  }
+
+  @keyframes notificationPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @media screen and (max-width: 768px) {
+    .notification-widget {
+      border-radius: 12px;
+      min-height: 120px;
+    }
+    
+    .notification-header {
+      padding: 16px 20px 12px;
+    }
+    
+    .notification-title-main {
+      font-size: 18px;
+      gap: 8px;
+    }
+    
+    .notification-count-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+    }
+    
+    .notification-container-scroll {
+      max-height: 60vh;
+    }
+    
+    .notification-item {
+      padding: 16px 20px;
+    }
+    
+    .notification-item:hover {
+      transform: none;
+    }
+    
+    .notification-item-header {
+      gap: 10px;
+    }
+    
+    .notification-item-title {
+      font-size: 15px;
+    }
+    
+    .notification-item-message {
+      font-size: 15px;
+    }
+    
+    .notification-item-date {
+      font-size: 11px;
+    }
+    
+    .notification-loading-spinner {
+      padding: 30px 16px;
+    }
+    
+    .notification-error-message,
+    .notification-empty-state {
+      padding: 30px 20px;
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .notification-widget {
+      border-radius: 8px;
+    }
+    
+    .notification-header {
+      padding: 12px 16px 10px;
+    }
+    
+    .notification-title-main {
+      font-size: 16px;
+    }
+    
+    .notification-item {
+      padding: 14px 16px;
+    }
+    
+    .notification-item-title {
+      font-size: 14px;
+    }
+    
+    .notification-item-message {
+      font-size: 14px;
+    }
+    
+    .notification-container-scroll::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZLWs-77mpkuKaTu6mUiQB-52MyRViunMVahIXKkevSQVP6IFxfPKQWsj5L711UxrEqwk-qOXtrG9i/pub?output=tsv";
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function loadNotifications() {
+      fetch(sheetURL)
+        .then(res => res.text())
+        .then(data => {
+          const rows = data.trim().split("\n").slice(1);
+          const container = document.getElementById("notificationBox");
+          
+          const validRows = rows.filter(row => {
+            const cols = row.split("\t");
+            return row.trim() && cols.length >= 3;
+          });
+
+          if (validRows.length === 0) {
+            container.innerHTML = `<div class="notification-empty-state">📭 No notifications available at the moment</div>`;
+            return;
+          }
+
+          const header = document.createElement("div");
+          header.className = "notification-header";
+          header.innerHTML = `
+            <h2 class="notification-title-main">
+              🔔 Notifications
+              <span class="notification-count-badge">${validRows.length}</span>
+            </h2>
+          `;
+
+          const notificationsContainer = document.createElement("div");
+          notificationsContainer.className = "notification-container-scroll";
+
+          container.innerHTML = "";
+          container.appendChild(header);
+          container.appendChild(notificationsContainer);
+
+          validRows.forEach((_, index) => {
+            const actualIndex = validRows.length - 1 - index;
+            const row = validRows[actualIndex];
+            const cols = row.split("\t");
+
+            const timestamp = cols[0]?.trim() || "";
+            const title = cols[1]?.trim() || "Untitled";
+            const message = cols[2]?.trim() || "";
+            const link = cols[3]?.trim() || "";
+
+            let dateFormatted = "";
+            const parsedDate = new Date(timestamp);
+            if (!isNaN(parsedDate)) {
+              const now = new Date();
+              const diffTime = Math.abs(now - parsedDate);
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              
+              if (diffDays === 1) {
+                dateFormatted = "Today";
+              } else if (diffDays === 2) {
+                dateFormatted = "Yesterday";
+              } else if (diffDays <= 7) {
+                dateFormatted = `${diffDays - 1} days ago`;
+              } else {
+                dateFormatted = parsedDate.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: parsedDate.getFullYear() !== now.getFullYear() ? "numeric" : undefined
+                });
+              }
+            } else {
+              dateFormatted = timestamp;
+            }
+
+            const notification = document.createElement("div");
+            notification.className = "notification-item";
+            notification.style.animationDelay = `${index * 0.1}s`;
+
+            notification.innerHTML = `
+              <div class="notification-item-header">
+                <div class="notification-item-title">${escapeHtml(title)}</div>
+                <div class="notification-item-icon"></div>
+              </div>
+              <div class="notification-item-message">
+                ${escapeHtml(message)}
+                ${link ? `<br><a href="${escapeHtml(link)}" style="color:#0ea5e9;text-decoration:underline;">🔗 Open Link</a>` : ""}
+              </div>
+              <div class="notification-item-date">${escapeHtml(dateFormatted)}</div>
+            `;
+
+            notification.addEventListener('click', () => {
+              notification.style.background = 'rgba(236, 72, 153, 0.12)';
+              setTimeout(() => {
+                notification.style.background = '';
+              }, 300);
+            });
+
+            notificationsContainer.appendChild(notification);
+          });
+
+          setTimeout(() => {
+            header.classList.add('notification-pulse');
+            setTimeout(() => header.classList.remove('notification-pulse'), 1000);
+          }, validRows.length * 100 + 200);
+
+        })
+        .catch(err => {
+          document.getElementById("notificationBox").innerHTML = `
+            <div class="notification-error-message">
+              ⚠️ Unable to load notifications<br>
+              <small style="opacity: 0.7; margin-top: 8px; display: block;">Please check your connection and try again</small>
+            </div>
+          `;
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadNotifications);
+    } else {
+      loadNotifications();
+    }
+  })();
+</script>
+
+</body>
+</html>
