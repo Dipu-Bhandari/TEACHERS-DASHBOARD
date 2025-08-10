@@ -3,136 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Optimized Glass Morphism</title>
+<title>Teachers Dashboard</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Pacifico&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Inter', sans-serif;
-    background: radial-gradient(ellipse at top, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
     overflow-x: hidden;
+    color: white;
 }
 
-/* Glass morph container */
-.container {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 24px;
-    padding: 35px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.app {
     width: 100%;
-    max-width: 800px;
-    text-align: center;
-}
-
-/* Heading */
-h2 {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 2.2rem;
-    margin-bottom: 25px;
-}
-
-/* Boxes layout */
-.boxes {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 18px;
-}
-
-.box {
+    max-width: 480px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    overflow: hidden;
+}
+
+/* App header */
+.header {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 18px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    letter-spacing: 0.5px;
+}
+
+/* Grid menu */
+.menu {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 20px;
+}
+
+.menu-item {
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 25px 15px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     color: white;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.2s ease, background 0.2s ease;
+    justify-content: center;
+    transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.box:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.08);
+.menu-item:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.12);
 }
 
-.box-icon {
-    font-size: 2rem;
+.menu-icon {
+    font-size: 2.2rem;
     margin-bottom: 10px;
 }
 
-.box-title {
-    font-size: 1.2rem;
+.menu-title {
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
-.box-description {
-    font-size: 0.9rem;
+.menu-desc {
+    font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.75);
-    line-height: 1.4;
 }
 
-/* Mobile Optimizations */
-@media (max-width: 768px) {
-    .container {
-        padding: 25px 18px;
-        border-radius: 18px;
-    }
-    h2 { font-size: 1.8rem; }
-    .box { padding: 20px 12px; }
-    .box-icon { font-size: 1.8rem; }
-    .box-title { font-size: 1rem; }
-    .box-description { font-size: 0.8rem; }
+/* Animated footer title */
+.footer {
+    padding: 15px;
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 1.4rem;
+    animation: colorPulse 3s infinite alternate ease-in-out;
 }
 
-/* Very small screens */
+@keyframes colorPulse {
+    0% { color: #ff6b6b; }
+    25% { color: #feca57; }
+    50% { color: #1dd1a1; }
+    75% { color: #48dbfb; }
+    100% { color: #ff9ff3; }
+}
+
 @media (max-width: 480px) {
-    .container { padding: 20px 12px; }
-    h2 { font-size: 1.6rem; }
-    .box { min-height: 120px; }
+    .menu { gap: 12px; padding: 15px; }
+    .menu-item { padding: 20px 10px; }
+    .menu-icon { font-size: 1.8rem; }
 }
 </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Welcome</h2>
-        <div class="boxes">
-            <a href="/TEACHERS-DASHBOARD/attendance.html" class="box">
-                <span class="box-icon">📋</span>
-                <h3 class="box-title">Attendance</h3>
-                <p class="box-description">Click to record attendance</p>
+    <div class="app">
+        <div class="header">Teachers Dashboard</div>
+        <div class="menu">
+            <a href="/TEACHERS-DASHBOARD/attendance.html" class="menu-item">
+                <span class="menu-icon">📋</span>
+                <div class="menu-title">Attendance</div>
+                <div class="menu-desc">Record attendance</div>
             </a>
-            <a href="https://dbspush.vercel.app/" class="box">
-                <span class="box-icon">🔔</span>
-                <h3 class="box-title">Send Notification</h3>
-                <p class="box-description">Send app notifications</p>
+            <a href="https://dbspush.vercel.app/" class="menu-item">
+                <span class="menu-icon">🔔</span>
+                <div class="menu-title">Send Notification</div>
+                <div class="menu-desc">Send app notifications</div>
             </a>
-            <a href="/TEACHERS-DASHBOARD/Notice-board.html" class="box">
-                <span class="box-icon">🪧</span>
-                <h3 class="box-title">DBS Notice Board</h3>
-                <p class="box-description">Click here to view the notifications</p>
-            <a href="/TEACHERS-DASHBOARD/Attendance-view.html" class="box">
-                <span class="box-icon">🗓️</span>
-                <h3 class="box-title">View Attendance</h3>
-                <p class="box-description">Click here to view Attendance</p>
+            <a href="/TEACHERS-DASHBOARD/Notice-board.html" class="menu-item">
+                <span class="menu-icon">🪧</span>
+                <div class="menu-title">Notice Board</div>
+                <div class="menu-desc">View notifications</div>
             </a>
+            <a href="/TEACHERS-DASHBOARD/Attendance-view.html" class="menu-item">
+                <span class="menu-icon">🗓️</span>
+                <div class="menu-title">View Attendance</div>
+                <div class="menu-desc">Check attendance records</div>
             </a>
         </div>
+        <div class="footer">DBS Amguri</div>
     </div>
 </body>
 </html>
