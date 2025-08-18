@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("https://raw.githubusercontent.com/Dipu-Bhandari/TEACHERS-DASHBOARD/refs/heads/main/sw.js")
+        .then(() => console.log("Service Worker Registered"));
+    });
+  }
+</script>
     <link rel="manifest" href="https://raw.githubusercontent.com/Dipu-Bhandari/TEACHERS-DASHBOARD/refs/heads/main/manifest.json">
     <meta name="theme-color" content="#004aad">
 <head>
@@ -144,5 +152,6 @@ body {
         </div>
         <div class="footer">DBS Amguri</div>
     </div>
+    
 </body>
 </html>
