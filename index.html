@@ -1,27 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="icon" type="image/png" sizes="48x48" href="TEACHERS-DASHBOARD/android-launchericon-48-48.png">
-<link rel="apple-touch-icon" type="image/png" sizes="48x48" href="TEACHERS-DASHBOARD/android-launchericon-48-48.png">
-<link rel="icon" type="image/png" sizes="72x72" href="TEACHERS-DASHBOARD/android-launchericon-72-72.png">
-<link rel="apple-touch-icon" type="image/png" sizes="72x72" href="TEACHERS-DASHBOARD/android-launchericon-72-72.png">
-<link rel="icon" type="image/png" sizes="96x96" href="TEACHERS-DASHBOARD/android-launchericon-96-96.png">
-<link rel="apple-touch-icon" type="image/png" sizes="96x96" href="TEACHERS-DASHBOARD/android-launchericon-96-96.png">
-<link rel="icon" type="image/png" sizes="144x144" href="TEACHERS-DASHBOARD/android-launchericon-144-144.png">
-<link rel="apple-touch-icon" type="image/png" sizes="144x144" href="TEACHERS-DASHBOARD/android-launchericon-144-144.png">
-<link rel="icon" type="image/png" sizes="192x192" href="TEACHERS-DASHBOARD/android-launchericon-192-192.png">
-<link rel="apple-touch-icon" type="image/png" sizes="192x192" href="TEACHERS-DASHBOARD/android-launchericon-192-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="TEACHERS-DASHBOARD/android-launchericon-512-512.png">
-<link rel="apple-touch-icon" type="image/png" sizes="512x512" href="TEACHERS-DASHBOARD/android-launchericon-512-512.png">
-    <script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("https://raw.githubusercontent.com/Dipu-Bhandari/TEACHERS-DASHBOARD/refs/heads/main/sw.js")
-        .then(() => console.log("Service Worker Registered"));
-    });
-  }
-</script>
-    <link rel="manifest" href="https://raw.githubusercontent.com/Dipu-Bhandari/TEACHERS-DASHBOARD/refs/heads/main/manifest.json">
-    <meta name="theme-color" content="#004aad">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +11,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    background: linear-gradient(135deg, #080A17, #0D1225, #121936);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -48,105 +26,189 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(8, 10, 23, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* App header */
-.header {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 18px;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    letter-spacing: 0.5px;
-}
-
-/* Grid menu */
+/* Grid menu - now takes full height */
 .menu {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    padding: 20px;
+    gap: 20px;
+    padding: 30px 20px;
+    align-content: center;
 }
 
 .menu-item {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 25px 15px;
+    background: linear-gradient(145deg, rgba(8, 10, 23, 0.9), rgba(18, 25, 54, 0.7));
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 30px 20px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 
+        0 8px 32px rgba(8, 10, 23, 0.4),
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     color: white;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: transform 0.15s ease, background 0.15s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.menu-item:hover::before {
+    left: 100%;
 }
 
 .menu-item:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-5px) scale(1.03);
+    background: linear-gradient(145deg, rgba(18, 25, 54, 0.9), rgba(8, 10, 23, 0.8));
+    box-shadow: 
+        0 12px 40px rgba(8, 10, 23, 0.5),
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-item:active {
+    transform: translateY(-2px) scale(1.01);
 }
 
 .menu-icon {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .menu-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 5px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
 }
 
 .menu-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
 }
 
-/* Animated footer title */
+/* Enhanced animated footer title */
 .footer {
-    padding: 15px;
+    padding: 20px;
     text-align: center;
     font-family: 'Pacifico', cursive;
-    font-size: 1.4rem;
-    animation: colorPulse 3s infinite alternate ease-in-out;
+    font-size: 1.5rem;
+    animation: enhancedColorPulse 4s infinite alternate ease-in-out;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    background: rgba(8, 10, 23, 0.6);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@keyframes colorPulse {
-    0% { color: #ff6b6b; }
-    25% { color: #feca57; }
-    50% { color: #1dd1a1; }
-    75% { color: #48dbfb; }
-    100% { color: #ff9ff3; }
+@keyframes enhancedColorPulse {
+    0% { 
+        color: #ff6b6b; 
+        text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    }
+    20% { 
+        color: #feca57; 
+        text-shadow: 0 0 20px rgba(254, 202, 87, 0.5);
+    }
+    40% { 
+        color: #1dd1a1; 
+        text-shadow: 0 0 20px rgba(29, 209, 161, 0.5);
+    }
+    60% { 
+        color: #48dbfb; 
+        text-shadow: 0 0 20px rgba(72, 219, 251, 0.5);
+    }
+    80% { 
+        color: #ff9ff3; 
+        text-shadow: 0 0 20px rgba(255, 159, 243, 0.5);
+    }
+    100% { 
+        color: #a8e6cf; 
+        text-shadow: 0 0 20px rgba(168, 230, 207, 0.5);
+    }
+}
+
+/* Floating particles effect */
+.app::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px;
+    animation: float 20s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-100px); }
 }
 
 @media (max-width: 480px) {
-    .menu { gap: 12px; padding: 15px; }
-    .menu-item { padding: 20px 10px; }
-    .menu-icon { font-size: 1.8rem; }
+    .menu { 
+        gap: 16px; 
+        padding: 25px 15px; 
+    }
+    .menu-item { 
+        padding: 25px 15px; 
+        border-radius: 16px;
+    }
+    .menu-icon { 
+        font-size: 2.2rem; 
+    }
+    .menu-title {
+        font-size: 1rem;
+    }
+    .menu-desc {
+        font-size: 0.8rem;
+    }
+    .footer {
+        font-size: 1.3rem;
+        padding: 16px;
+    }
 }
 </style>
 </head>
 <body>
     <div class="app">
-        <div class="header">Teachers Dashboard</div>
         <div class="menu">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfrTFjonRENHhKsQF8K0ddWvrbBUsmOUWoe49tNCKi17Ru5fw/viewform?usp=pp_url&entry.2067132495=Present&entry.922930457=Present&entry.2098849254=Present&entry.825615847=Present&entry.1972298771=Present&entry.455109709=Present&entry.1746354318=Present&entry.1885213353=Present&entry.1704553058=Present&entry.1961942278=Present&entry.1938487415=Present&entry.679404773=Present&entry.675923891=Present&entry.372775684=Present&entry.759251673=Present&entry.831305248=Present&entry.1830965927=Present&entry.1752018186=Present&entry.568485234=Present&entry.1585808420=Present&entry.1618534800=Present&entry.893056864=Present&entry.1920143664=Present&entry.976855421=Present&entry.2045533025=Present&entry.1092845402=Present&entry.2121327774=Present&entry.1729799010=Present&entry.2144641410=Present&entry.1473693699=Present&entry.551309356=Present&entry.769322427=Present&entry.649655184=Present&entry.421367982=Present&entry.1637660833=Present&entry.481895573=Present&entry.69858936=Present&entry.637889006=Present&entry.2053740208=Present&entry.1453797423=Present&entry.1392366589=Present&entry.2128754552=Present&entry.1023699235=Present&entry.2089776717=Present&entry.1419288407=Present&entry.1387810830=Present&entry.1584133703=Present&entry.2061612788=Present&entry.350769402=Present&entry.829342940=Present&entry.1026112364=Present&entry.825226811=Present&entry.2119604589=Present&entry.1913893335=Present&entry.101031503=Present&entry.99431221=Present&entry.1834050210=Present&entry.1179893630=Present&entry.491673353=Present&entry.1283179870=Present&entry.410272896=Present&entry.839894023=Present&entry.618780941=Present&entry.1719334646=Present&entry.811617241=Present&entry.595629308=Present&entry.592014691=Present&entry.178531672=Present&entry.2020297633=Present&entry.1394452045=Present&entry.1566597313=Present" class="menu-item">
+            <a href="  https://docs.google.com/forms/d/e/1FAIpQLSfrTFjonRENHhKsQF8K0ddWvrbBUsmOUWoe49tNCKi17Ru5fw/viewform?usp=pp_url&entry.2067132495=Present&entry.922930457=Present&entry.2098849254=Present&entry.825615847=Present&entry.1972298771=Present&entry.455109709=Present&entry.1746354318=Present&entry.1885213353=Present&entry.1704553058=Present&entry.1961942278=Present&entry.1938487415=Present&entry.679404773=Present&entry.675923891=Present&entry.372775684=Present&entry.759251673=Present&entry.831305248=Present&entry.1830965927=Present&entry.1752018186=Present&entry.568485234=Present&entry.1585808420=Present&entry.1618534800=Present&entry.893056864=Present&entry.1920143664=Present&entry.976855421=Present&entry.2045533025=Present&entry.1092845402=Present&entry.2121327774=Present&entry.1729799010=Present&entry.2144641410=Present&entry.1473693699=Present&entry.551309356=Present&entry.769322427=Present&entry.649655184=Present&entry.421367982=Present&entry.1637660833=Present&entry.481895573=Present&entry.69858936=Present&entry.637889006=Present&entry.2053740208=Present&entry.1453797423=Present&entry.1392366589=Present&entry.2128754552=Present&entry.1023699235=Present&entry.2089776717=Present&entry.1419288407=Present&entry.1387810830=Present&entry.1584133703=Present&entry.2061612788=Present&entry.350769402=Present&entry.829342940=Present&entry.1026112364=Present&entry.825226811=Present&entry.2119604589=Present&entry.1913893335=Present&entry.101031503=Present&entry.99431221=Present&entry.1834050210=Present&entry.1179893630=Present&entry.491673353=Present&entry.1283179870=Present&entry.410272896=Present&entry.839894023=Present&entry.618780941=Present&entry.1719334646=Present&entry.811617241=Present&entry.595629308=Present&entry.592014691=Present&entry.178531672=Present&entry.2020297633=Present&entry.1394452045=Present&entry.1566597313=Present" class="menu-item">
                 <span class="menu-icon">📋</span>
                 <div class="menu-title">Attendance</div>
                 <div class="menu-desc">Record attendance</div>
             </a>
-            <a href="https://dbspush.vercel.app/" class="menu-item">
+            <a href="  https://dbspush.vercel.app/  " class="menu-item">
                 <span class="menu-icon">🔔</span>
                 <div class="menu-title">Send Notification</div>
                 <div class="menu-desc">Send app notifications</div>
